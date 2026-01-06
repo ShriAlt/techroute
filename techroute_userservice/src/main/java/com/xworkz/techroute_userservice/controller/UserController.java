@@ -1,10 +1,8 @@
 package com.xworkz.techroute_userservice.controller;
 
-import com.xworkz.techroute_userservice.dto.AuthResponse;
-import com.xworkz.techroute_userservice.dto.LoginRequest;
 import com.xworkz.techroute_userservice.dto.RegisterRequest;
 import com.xworkz.techroute_userservice.dto.UserResponse;
-import com.xworkz.techroute_userservice.service.AuthService;
+
 import com.xworkz.techroute_userservice.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -17,18 +15,19 @@ import jakarta.validation.Valid;
 public class UserController {
 
     private final UserService userService;
-
-
     public UserController(UserService userService) {
         this.userService = userService;
-
     }
+
 
     @PostMapping("/register")
     public ResponseEntity<UserResponse> register(@Valid @RequestBody RegisterRequest request) {
         UserResponse response = userService.registerUser(request);
         return ResponseEntity.ok(response);
     }
+
+
+
 //    @PostMapping("/login")
 //    public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest request) {
 //        AuthResponse response = authService.login(request);

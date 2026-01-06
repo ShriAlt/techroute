@@ -4,7 +4,7 @@ import org.springframework.data.domain.AuditorAware;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
-
+// this is for audit table will update audit table automatically
 @Component
 public class AuditorAwareImpl implements AuditorAware<String > {
 
