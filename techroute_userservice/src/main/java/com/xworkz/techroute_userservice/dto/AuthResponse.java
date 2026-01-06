@@ -6,7 +6,7 @@ import lombok.Data;
 public class AuthResponse {
 
     private String accessToken;
-    private String refreshToken; // optional
+    private String refreshToken;
     private long expiresIn;
 }
 
