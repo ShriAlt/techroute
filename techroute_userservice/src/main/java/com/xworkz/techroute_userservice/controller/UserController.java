@@ -1,5 +1,7 @@
 package com.xworkz.techroute_userservice.controller;
 
+import com.xworkz.techroute_userservice.dto.AuthResponse;
+import com.xworkz.techroute_userservice.dto.LoginRequest;
 import com.xworkz.techroute_userservice.dto.RegisterRequest;
 import com.xworkz.techroute_userservice.dto.UserResponse;
 
@@ -26,14 +28,13 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest request) {
+        AuthResponse response =null;
+        return ResponseEntity.ok(response);
+    }
 
 
-//    @PostMapping("/login")
-//    public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest request) {
-//        AuthResponse response = authService.login(request);
-//        return ResponseEntity.ok(response);
-//    }
-//
 //    @GetMapping("/me")
 //    public ResponseEntity<UserResponse> getCurrentUser() {
 //        UserResponse response = userService.getCurrentUser();

@@ -21,17 +21,6 @@ public class UserServiceImpl implements UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-//    @Override
-//    public UserResponse registerUser(RegisterRequest registerRequest) {
-//
-//        UserEntity userEntity = UserMapper.INSTANCE.registerRequestToUserEntity(registerRequest);
-//        userEntity.setPasswordHash(passwordEncoder.encode(registerRequest.getPassword()));
-//        userEntity.setRole(Role.CUSTOMER);
-//        userEntity.setStatus(Status.ACTIVE);
-//        UserEntity save = userRepository.save(userEntity);
-//        return null;
-//    }
-
 
     @Override
     public UserResponse registerUser(RegisterRequest registerRequest) {
