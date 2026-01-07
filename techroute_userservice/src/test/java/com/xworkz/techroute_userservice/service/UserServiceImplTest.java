@@ -6,14 +6,17 @@ import com.xworkz.techroute_userservice.dto.RegisterRequest;
 import com.xworkz.techroute_userservice.dto.UserResponse;
 import com.xworkz.techroute_userservice.enity.UserEntity;
 import com.xworkz.techroute_userservice.enums.Role;
+import com.xworkz.techroute_userservice.enums.Status;
 import com.xworkz.techroute_userservice.exception.EmailNotExistException;
 import com.xworkz.techroute_userservice.exception.PasswordMissMatchException;
 import com.xworkz.techroute_userservice.repository.UserRepository;
 import com.xworkz.techroute_userservice.util.JwtUtil;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -25,7 +28,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceImplTest {
@@ -66,6 +69,14 @@ class UserServiceImplTest {
     void registerUser_usernameExists_throwsException() {
         RegisterRequest request = new RegisterRequest("shriharsha", "test@example.com", "password");
         when(userRepository.existsByUsername(request.getUsername())).thenReturn(true);
+
+        assertThrows(IllegalArgumentException.class, () -> userService.registerUser(request));
+    }
+
+    @Test
+    void registerUser_emailExists_throwsException() {
+        RegisterRequest request = new RegisterRequest("shriharsha", "test@example.com", "password");
+        when(userRepository.existsByEmail(request.getEmail())).thenReturn(true);
 
         assertThrows(IllegalArgumentException.class, () -> userService.registerUser(request));
     }
@@ -122,7 +133,7 @@ class UserServiceImplTest {
 
         UserResponse response = userService.updateUserRole(id, Role.ADMIN);
 
-        assertThat(response.getRole()).isEqualTo(Role.ADMIN);
+        assertThat(response.getRole()).isEqualTo("ADMIN");
     }
 
     @Test
@@ -143,7 +154,50 @@ class UserServiceImplTest {
 
         List<UserResponse> responses = userService.getAllUsers();
 
-//        assertThat(responses).hasSameClassAs(1);
+        assertThat(responses.size()==1);
         assertThat(responses.get(0).getUsername()).isEqualTo("shriharsha");
     }
+//    @BeforeEach
+//    void setUp() {
+//        MockitoAnnotations.openMocks(this);
+//       UUID  userId = UUID.randomUUID();
+//        UserEntity userEntity = new UserEntity();
+//        userEntity.setId(userId);
+//        userEntity.setStatus(Status.INACTIVE);
+//    }
+
+    @Test
+    void updateUserStatus_success() {
+        UUID  userId = UUID.randomUUID();
+        UserEntity userEntity = new UserEntity();
+        userEntity.setId(userId);
+        userEntity.setStatus(Status.INACTIVE);
+        Status newStatus = Status.ACTIVE;
+        when(userRepository.findById(userId)).thenReturn(Optional.of(userEntity));
+        when(userRepository.save(any(UserEntity.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        UserResponse response = userService.updateUserStatus(userId, newStatus);
+
+        assertNotNull(response);
+        assertEquals("ACTIVE", response.getStatus());
+        verify(userRepository).findById(userId);
+        verify(userRepository).save(userEntity);
+    }
+    @Test
+    void updateUserStatus_userNotFound() {
+        UUID  userId = UUID.randomUUID();
+        UserEntity userEntity = new UserEntity();
+        userEntity.setId(userId);
+        userEntity.setStatus(Status.INACTIVE);
+        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+
+        RuntimeException exception = assertThrows(RuntimeException.class,
+                () -> userService.updateUserStatus(userId, Status.ACTIVE));
+
+        assertEquals("User not found", exception.getMessage());
+        verify(userRepository).findById(userId);
+        verify(userRepository, never()).save(any(UserEntity.class));
+    }
+
+
 }

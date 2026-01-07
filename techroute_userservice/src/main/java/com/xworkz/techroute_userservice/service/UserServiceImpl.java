@@ -89,4 +89,5 @@ public class UserServiceImpl implements UserService {
                 .map(UserMapper.INSTANCE::userEntityToUserResponse)
                 .toList();
     }
+
 }
