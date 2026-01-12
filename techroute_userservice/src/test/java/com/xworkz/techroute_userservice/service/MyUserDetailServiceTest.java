@@ -28,7 +28,6 @@ class MyUserDetailServiceTest {
 
     @Test
     void loadUserByUsername_success() {
-        // Arrange
         UserEntity user = new UserEntity();
         user.setId(UUID.randomUUID());
         user.setUsername("shriharsha");
@@ -37,10 +36,7 @@ class MyUserDetailServiceTest {
 
         when(userRepository.findByUsername("shriharsha")).thenReturn(user);
 
-        // Act
         UserDetails userDetails = myUserDetailService.loadUserByUsername("shriharsha");
-
-        // Assert
         assertThat(userDetails.getUsername()).isEqualTo("shriharsha");
         assertThat(userDetails.getPassword()).isEqualTo("encodedPassword");
         assertThat(userDetails.getAuthorities())
@@ -50,10 +46,7 @@ class MyUserDetailServiceTest {
 
     @Test
     void loadUserByUsername_userNotFound_throwsException() {
-        // Arrange
         when(userRepository.findByUsername("missingUser")).thenReturn(null);
-
-        // Act & Assert
         assertThrows(UsernameNotFoundException.class,
                 () -> myUserDetailService.loadUserByUsername("missingUser"));
     }

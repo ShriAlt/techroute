@@ -2,6 +2,8 @@ package com.xworkz.techroute_userservice.config;
 
 import com.xworkz.techroute_userservice.filter.JwtAuthenticationFilter;
 import com.xworkz.techroute_userservice.util.JwtUtil;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -17,9 +19,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    private final JwtUtil jwtUtil;
+    private  JwtUtil jwtUtil;
+
     public SecurityConfig(JwtUtil jwtUtil) {
         this.jwtUtil = jwtUtil;
+    }
+
+    public SecurityConfig(){
+
     }
 
     @Bean

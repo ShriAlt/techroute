@@ -23,7 +23,15 @@ public class UserResponse {
     private LocalDateTime updatedAt;
 
 
-    public UserResponse(String username, String mail, Role role, Status status) {
+    public UserResponse(String username, String email, Role role, Status status) {
+        this.id = UUID.randomUUID();
+        this.username = username;
+        this.email = email;
+        this.role = role.name();
+        this.status = status.name();
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
     }
+
 }
 
