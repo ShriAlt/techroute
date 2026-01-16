@@ -4,6 +4,7 @@ import com.xworkz.techroute_userservice.filter.JwtAuthenticationFilter;
 import com.xworkz.techroute_userservice.util.JwtUtil;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -21,13 +22,13 @@ public class SecurityConfig {
 
     private  JwtUtil jwtUtil;
 
+
+
     public SecurityConfig(JwtUtil jwtUtil) {
         this.jwtUtil = jwtUtil;
     }
 
-    public SecurityConfig(){
 
-    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -35,9 +36,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/api/users/register",
-                                "/api/users/login",
-                                "/swagger-ui/**",
-                                "/v3/api-docs/**"
+                                "/api/users/login"
                         ).permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()

@@ -3,6 +3,7 @@ package com.xworkz.techroute_userservice.util;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -11,7 +12,12 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
-    private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+
+    private final Key key ;
+
+    public JwtUtil(@Value("${spring.jwt.secret}") String secret) {
+        this.key = Keys.hmacShaKeyFor(secret.getBytes()); }
+
     private static final long expirationMs = 3600000; // 1 hour
 
     public String generateToken(String userId, String role) {
@@ -23,7 +29,7 @@ public class JwtUtil {
                 .claim("role", role)               // role → CUSTOMER/ADMIN
                 .setIssuedAt(now)                  // iat
                 .setExpiration(expiry)             // exp
-                .signWith(key)
+                .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
 

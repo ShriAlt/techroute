@@ -12,10 +12,10 @@ class JwtUtilTest {
 
     private JwtUtil jwtUtil;
 
-    @BeforeEach
-    void setup() {
-        jwtUtil = new JwtUtil();
-    }
+//    @BeforeEach
+//    void setup() {
+//        jwtUtil = new JwtUtil();
+//    }
 
     @Test
     void generateToken_containsUserIdAndRole() {
