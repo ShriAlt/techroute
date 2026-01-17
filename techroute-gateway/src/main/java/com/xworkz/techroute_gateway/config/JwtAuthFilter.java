@@ -21,14 +21,12 @@ public class JwtAuthFilter implements GlobalFilter {
         if (path.endsWith("/login") || path.endsWith("/register")) {
             return chain.filter(exchange);
         }
-
         String authHeader = exchange.getRequest().getHeaders().getFirst("Authorization");
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
             return exchange.getResponse().setComplete();
         }
-
         String token = authHeader.substring(7);
         try {
             jwtUtil.validateToken(token); // signature + expiry check
@@ -36,7 +34,6 @@ public class JwtAuthFilter implements GlobalFilter {
             exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
             return exchange.getResponse().setComplete();
         }
-
         return chain.filter(exchange);
     }
 }
