@@ -11,23 +11,5 @@ import java.util.UUID;
 @Table(name = "orders")
 public class Order extends BaseEntity{
 
-    @Id
-    @GeneratedValue
-    private UUID id;
 
-    private UUID customerId; // extracted from JWT
-
-    @ElementCollection
-    private List<OrderItem> products; // productId, quantity, price snapshot
-
-    private BigDecimal totalAmount;
-
-    @Enumerated(EnumType.STRING)
-    private OrderStatus status; // PENDING, CONFIRMED, SHIPPED, DELIVERED, CANCELLED
-
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-
-    private String createdBy;
-    private String updatedBy;
 }
