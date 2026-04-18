@@ -17,7 +17,6 @@ public class AuditorAwareImpl implements AuditorAware<String > {
         if (authentication == null || !authentication.isAuthenticated()) {
             return Optional.of("SYSTEM"); // fallback if no user is logged in
         }
-
         Object principal = authentication.getPrincipal();
         if (principal == null) {
             return Optional.of("SYSTEM"); // avoid NPE
